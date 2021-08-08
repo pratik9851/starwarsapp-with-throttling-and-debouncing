@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        input{
+
+width: 200px;
+height: 24px;
+
+}
+        #starwarschar{
+            height: 200px;
+        width: 205px;
+        border: 1px solid black;
+        border-top: none;
+        overflow-y: auto ;
+        display: none;
+        margin-right: 43px;
+        
+
+        }
+        .logo{
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .search{
+            
+    width: 100%;
+            display: flex;
+        background: transparent;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="search">
+         <div class="logo">
+             <img src="https://img.icons8.com/color/96/000000/star-wars.png/" alt="">
+         </div>
+    
+        <div class="sub">
+            <input type="text" id="query" oninput="throttlefunction()" class="inp" >
+            <button ><img src="https://img.icons8.com/material-two-tone/24/000000/search.png"/></button>
+            
+        </div>
+        <div id="starwarschar">
+
+        </div>
+        </div>
+</body>
+</html>
+
+<script>
+      
+      let char_div=document.getElementById("starwarschar");
+
+    async function searchchar(){
+    
+    let q=document.getElementById("query").value; 
+    char_div.style.display="block"   
+
+    let res=await fetch(`https://swapi.dev/api/people/?search=${q}`);
+    let data=await res.json()
+    return data.results;
+
+    }
+    
+
+   function throttlefunction(){
+      Main();  
+}
+    
+function appendchar(d) {
+    char_div.innerHTML=null;
+    
+    d.forEach(({name}) => {
+   
+       let p=document.createElement("p")
+       p.innerText=name;
+       char_div.append(p);
+   
+           
+       });
+    
+}
+
+async function Main(){
+    let chars=await  searchchar();
+
+     appendchar(chars)
+}
+
+</script>
